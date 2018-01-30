@@ -1,29 +1,62 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "html/template"
+  "fmt"
+  "net/http"
+  "html/template"
+  "encoding/xml"
+  "io/ioutil"
 )
 
-type NewsAggPage struct{
-    Title string
-    News string
+type NewsMap struct {
+  Keyword string
+  Location string
 }
 
-
-func indexHandler(w http.ResponseWriter, r *http.Request){
-    fmt.Fprintf(w, "<h1>HW</h1>")
+type NewsAggPage struct {
+  Title string
+  News map[string]NewsMap
 }
 
-func newsAggHandler(w http.ResponseWriter, r *http.Request){
-    p := NewsAggPage{Title:"Title",News:"News"}
-    t, _ := template.ParseFiles("htmltemplate.html")
-    t.Execute(w,p)
+type Sitemapindex struct {
+  Locations []string `xml:"sitemap>loc"`
+}
+
+type News struct {
+  Titles []string `xml:"url>news>title"`
+  Keywords []string `xml:"url>news>keywords"`
+  Locations []string `xml:"url>loc"`
+}
+
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "<h1>This is Devansh's news aggregtor</h1>")
+}
+
+func newsAggHandler(w http.ResponseWriter, r *http.Request) {
+  var s Sitemapindex
+  var n News
+  resp, _ := http.Get("https://www.washingtonpost.com/news-sitemap-index.xml")
+  bytes, _ := ioutil.ReadAll(resp.Body)
+  xml.Unmarshal(bytes, &s)
+  news_map := make(map[string]NewsMap)
+
+  for _, Location := range s.Locations {
+    resp, _ := http.Get(Location)
+    bytes, _ := ioutil.ReadAll(resp.Body)
+    xml.Unmarshal(bytes, &n)
+
+    for idx, _ := range n.Keywords {
+      news_map[n.Titles[idx]] = NewsMap{n.Keywords[idx], n.Locations[idx]}
+    }
   }
 
-func main(){
-      http.HandleFunc("/",indexHandler)
-      http.HandleFunc("/agg/",newsAggHandler)
-      http.ListenAndServe(":8000",nil)
-    }
+  p := NewsAggPage{Title: "Current News from WP", News: news_map}
+  t, _ := template.ParseFiles("htmltemplate.html")
+  t.Execute(w, p)
+}
+
+func main() {
+  http.HandleFunc("/", indexHandler)
+  http.HandleFunc("/wp/", newsAggHandler)
+  http.ListenAndServe(":8080", nil) 
+}
