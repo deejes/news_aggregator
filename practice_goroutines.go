@@ -2,30 +2,29 @@ package main
 
 import (
   "fmt"
-  "time"
-  "sync"
 )
 
-var wg sync.WaitGroup
 
-func say(s string){
-  defer wg.Done()
-  for i:=0; i<3;i++{
-    fmt.Println(s)
-    time.Sleep(time.Millisecond*500)
-      }
+func cleanup(){
+  r := recover() 
+  if r!= nil{
+    fmt.Println("recoevered in cleanup",r)
+  }
+}
+
+func hello(s string){
+
+  defer cleanup()
+  fmt.Println("hello" + s)
+  for i:=0;i < 4; i++ {
+    fmt.Println(i)
+
+    if i == 2{
+      panic ("oh no!")
     }
+  }
+}
 
-
-    func main() {
-      go say("Hey")
-      wg.Add(1)
-      go say("There")
-      wg.Add(1)
-      wg.Wait()
-      go say("Hi")
-      wg.Add(1)
-      wg.Wait()
-      fmt.Println("s")
-    }
-
+func main() {
+  hello("ss")
+}
