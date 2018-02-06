@@ -58,26 +58,30 @@ var root_url = "http://spiderbites.nytimes.com/"
 //  fmt.Println(story_links)
 //}
 //
-//var Article struct{
-//  Title string
-//  //Date string
-//  //Body string
-//}
+
+type Article struct{
+  Title string
+  Author string
+  Date string
+  Body string
+}
 
 var article_page = "http://www.nytimes.com/2000/12/22/arts/art-review-party-time-inside-and-out-playful-wit-reigns-at-skidmore-s-new-museum.html"
 func main(){
-  // write a struct to take story text, date and headline
-  //var a Article
-  //var story_links []string
+  var a Article
   doc,_ := goquery.NewDocument(article_page)
+
   title := doc.Find("h1")
-  fmt.Println(title.Text())
   date := doc.Find(".dateline")
-  fmt.Println(date.Text())
-  byline := doc.Find(".byline")
-  fmt.Println(byline.Text()[3:])
+  author := doc.Find(".byline")
   body := doc.Find(".story-body-text")
-  fmt.Println(body.Text())
+
+  a.Title = title.Text()
+  a.Author= author.Text()[3:]
+  a.Date = date.Text()
+  a.Body = body.Text()
+
+  fmt.Println(a)
   //for i := range sel.Nodes{
   //node := sel.Eq(i).Children().First()
   //url,_ := node.Attr("href")
