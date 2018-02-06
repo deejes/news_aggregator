@@ -1,3 +1,0 @@
-figure out a way to store the pictures and videos too
-
-set up a lambda function to grab a story everytime one is published?
