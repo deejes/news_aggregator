@@ -29,17 +29,33 @@ var root_url = "http://spiderbites.nytimes.com/"
 //  }
 //}
 
-var year_url = "http://spiderbites.nytimes.com/free_2000/index.html"
+//var year_url = "http://spiderbites.nytimes.com/free_2000/index.html"
+
+//
+//func main(){
+//  var yearly_page_links []string
+//  doc,_ := goquery.NewDocument(year_url)
+//  sel := doc.Find("#mainContent").Find("li")
+//  for i := range sel.Nodes{
+//    node := sel.Eq(i).Children().First()
+//    url,_ := node.Attr("href")
+//    yearly_page_links= append(yearly_page_links, root_url+url)
+//  }
+//  fmt.Println(yearly_page_links)
+//}
 
 
+var stories_links_page = "http://spiderbites.nytimes.com//free_2000/articles_2000_12_00002.html"
 func main(){
-  var yearly_page_links []string
-  doc,_ := goquery.NewDocument(year_url)
-  sel := doc.Find("#mainContent").Find("li")
+  var story_links []string
+  doc,_ := goquery.NewDocument(stories_links_page)
+  sel := doc.Find("#headlines").Find("li")
   for i := range sel.Nodes{
     node := sel.Eq(i).Children().First()
     url,_ := node.Attr("href")
-    yearly_page_links= append(yearly_page_links, root_url+url)
+    story_links= append(story_links, url)
   }
-  fmt.Println(yearly_page_links)
+  fmt.Println(story_links)
 }
+
+
