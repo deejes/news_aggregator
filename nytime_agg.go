@@ -11,7 +11,7 @@ import (
 )
 
 
-//var root_url = "http://spiderbites.nytimes.com/"
+var root_url = "http://spiderbites.nytimes.com/"
 //func main(){
 //  var yearly_links []string
 //  doc,_ := goquery.NewDocument(root_url)
@@ -29,19 +29,17 @@ import (
 //  }
 //}
 
-var root_url = "http://spiderbites.nytimes.com/free_2000/index.html"
+var year_url = "http://spiderbites.nytimes.com/free_2000/index.html"
 
 
 func main(){
-  var parts_links []string
-  doc,_ := goquery.NewDocument(root_url)
+  var yearly_page_links []string
+  doc,_ := goquery.NewDocument(year_url)
   sel := doc.Find("#mainContent").Find("li")
   for i := range sel.Nodes{
     node := sel.Eq(i).Children().First()
     url,_ := node.Attr("href")
-    fmt.Println(url)
-    parts_links = append(parts_links,url)
+    yearly_page_links= append(yearly_page_links, root_url+url)
   }
-  fmt.Println(len(parts_links))
-  fmt.Println(parts_links)
+  fmt.Println(yearly_page_links)
 }
