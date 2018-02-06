@@ -76,6 +76,8 @@ func main(){
   fmt.Println(date.Text())
   byline := doc.Find(".byline")
   fmt.Println(byline.Text()[3:])
+  body := doc.Find(".story-body-text")
+  fmt.Println(body.Text())
   //for i := range sel.Nodes{
   //node := sel.Eq(i).Children().First()
   //url,_ := node.Attr("href")
