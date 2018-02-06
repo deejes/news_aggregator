@@ -45,8 +45,23 @@ var root_url = "http://spiderbites.nytimes.com/"
 //}
 
 
-var stories_links_page = "http://spiderbites.nytimes.com//free_2000/articles_2000_12_00002.html"
+//var stories_links_page = "http://spiderbites.nytimes.com//free_2000/articles_2000_12_00002.html"
+//func main(){
+//  var story_links []string
+//  doc,_ := goquery.NewDocument(stories_links_page)
+//  sel := doc.Find("#headlines").Find("li")
+//  for i := range sel.Nodes{
+//    node := sel.Eq(i).Children().First()
+//    url,_ := node.Attr("href")
+//    story_links= append(story_links, url)
+//  }
+//  fmt.Println(story_links)
+//}
+//
+
+var article_page = "http://www.nytimes.com/2000/12/22/arts/art-review-party-time-inside-and-out-playful-wit-reigns-at-skidmore-s-new-museum.html"
 func main(){
+  // write a struct to take story text, date and headline
   var story_links []string
   doc,_ := goquery.NewDocument(stories_links_page)
   sel := doc.Find("#headlines").Find("li")
@@ -57,5 +72,3 @@ func main(){
   }
   fmt.Println(story_links)
 }
-
-
