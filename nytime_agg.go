@@ -58,17 +58,27 @@ var root_url = "http://spiderbites.nytimes.com/"
 //  fmt.Println(story_links)
 //}
 //
+//var Article struct{
+//  Title string
+//  //Date string
+//  //Body string
+//}
 
 var article_page = "http://www.nytimes.com/2000/12/22/arts/art-review-party-time-inside-and-out-playful-wit-reigns-at-skidmore-s-new-museum.html"
 func main(){
   // write a struct to take story text, date and headline
-  var story_links []string
-  doc,_ := goquery.NewDocument(stories_links_page)
-  sel := doc.Find("#headlines").Find("li")
-  for i := range sel.Nodes{
-    node := sel.Eq(i).Children().First()
-    url,_ := node.Attr("href")
-    story_links= append(story_links, url)
-  }
-  fmt.Println(story_links)
+  //var a Article
+  //var story_links []string
+  doc,_ := goquery.NewDocument(article_page)
+  title := doc.Find("h1")
+  fmt.Println(title.Text())
+  date := doc.Find(".dateline")
+  fmt.Println(date.Text())
+  byline := doc.Find(".byline")
+  fmt.Println(byline.Text()[3:])
+  //for i := range sel.Nodes{
+  //node := sel.Eq(i).Children().First()
+  //url,_ := node.Attr("href")
+  //story_links= append(story_links, url)
+  //}
 }
