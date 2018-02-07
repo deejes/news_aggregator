@@ -1,18 +1,6 @@
-<h1>{{.Title}}</h1>
 
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Keywords</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{ range $key, $value := .News }}
-    <tr>
-      <td><a href="{{ $value.Location }}" target='_blank'>{{ $key }}</td>
-        <td>{{ $value.Keyword }}</td>
-      </tr>
+    {{ range $key, $value := .article}}
+        <h2>{{ $value.Title}}</h2>
+        <h2>{{ $value.Date }}</h2>
       {{ end }}
-    </tbody>
-  </table>
 

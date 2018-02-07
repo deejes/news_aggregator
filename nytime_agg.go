@@ -8,6 +8,7 @@ import (
   //"golang.org/x/net/html"
   "github.com/PuerkitoBio/goquery"
   //"strconv"
+  "html/template"
 )
 
 
@@ -75,6 +76,7 @@ var stories_links_page = "http://spiderbites.nytimes.com//free_2000/articles_200
 //  get_from_subparts_page(stories_links_page)
 //}
 
+// TODO implement articles page struct and display articles through html
 func Get_from_subparts_page(w http.ResponseWriter, r *http.Request){
   var count int
   var articles []Article
@@ -96,8 +98,9 @@ func Get_from_subparts_page(w http.ResponseWriter, r *http.Request){
       break
     }
   }
-  fmt.Fprint(w,"<h1>hello</h1>")
-    fmt.Println(articles)
+  t, _ := template.ParseFiles("nyt_html.html")
+  t.Execute(w, articles)
+  fmt.Println(articles)
 }
 
 
