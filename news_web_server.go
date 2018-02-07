@@ -79,5 +79,6 @@ func newsAggHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
   http.HandleFunc("/", indexHandler)
   http.HandleFunc("/wp/", newsAggHandler)
+  http.HandleFunc("/nyt/", Get_from_subparts_page)
   http.ListenAndServe(":8080", nil) 
 }

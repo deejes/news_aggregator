@@ -3,7 +3,7 @@ package main
 
 import (
   "fmt"
-  //"net/http"
+  "net/http"
   //"io/ioutil"
   //"golang.org/x/net/html"
   "github.com/PuerkitoBio/goquery"
@@ -28,10 +28,7 @@ var root_url = "http://spiderbites.nytimes.com/"
 //  fmt.Println(ind,link)
 //  }
 //}
-
 //var year_url = "http://spiderbites.nytimes.com/free_2000/index.html"
-
-//
 //func main(){
 //  var yearly_page_links []string
 //  doc,_ := goquery.NewDocument(year_url)
@@ -53,14 +50,13 @@ type Article struct{
 
 var article_array []Article
 
-
-var article_page = "http://www.nytimes.com/2000/12/22/arts/art-review-party-time-inside-and-out-playful-wit-reigns-at-skidmore-s-new-museum.html"
-func get_article_data(url string) {
+func get_article_data(url string) Article{
   var a Article
   doc,_ := goquery.NewDocument(url)
 
   title := doc.Find("h1")
   date := doc.Find(".dateline")
+  // TODO catch/try for authors
   //author := doc.Find(".byline")
   body := doc.Find(".story-body-text")
 
@@ -68,19 +64,20 @@ func get_article_data(url string) {
   //a.Author= author.Text()[3:]
   a.Date = date.Text()
   a.Body = body.Text()
-
-  fmt.Println(a)
-  //return (a)
-  //for i := range sel.Nodes{
-  //node := sel.Eq(i).Children().First()
-  //url,_ := node.Attr("href")
-  //story_links= append(story_links, url)
-  //}
+  return a
+  //fmt.Println(a)
 }
 
 
 var stories_links_page = "http://spiderbites.nytimes.com//free_2000/articles_2000_12_00002.html"
-func main(){
+
+//func main(){
+//  get_from_subparts_page(stories_links_page)
+//}
+
+func Get_from_subparts_page(w http.ResponseWriter, r *http.Request){
+  var count int
+  var articles []Article
   var story_links []string
   doc,_ := goquery.NewDocument(stories_links_page)
   sel := doc.Find("#headlines").Find("li")
@@ -93,10 +90,14 @@ func main(){
   // iterate over article links
   for i := range story_links{
     l := story_links[i]
-    fmt.Println(l)
-    get_article_data(l)
+    articles = append(articles,get_article_data(l))
+    count++
+    if count > 3 {
+      break
+    }
   }
-
+  fmt.Fprint(w,"<h1>hello</h1>")
+    fmt.Println(articles)
 }
 
 
